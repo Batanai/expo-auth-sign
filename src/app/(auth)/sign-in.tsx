@@ -1,11 +1,12 @@
 import { StatusBar } from 'expo-status-bar';
 import { KeyboardAvoidingView, Platform, Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
-import CustomInput from './src/components/CustomInput';
-import CustomButton from './src/components/CustomButton';
+import CustomInput from '@/components/CustomInput';
+import CustomButton from '@/components/CustomButton';
 import { useState } from 'react';
 import {useForm, Controller} from 'react-hook-form';
 import {z} from 'zod';
 import {zodResolver} from '@hookform/resolvers/zod';
+import { Link } from 'expo-router';
 
 const signInSchema = z.object({
   email: z.string({message: "Email is required"}).email("Invalid email"),
@@ -14,7 +15,7 @@ const signInSchema = z.object({
 
 type SignInFields = z.infer<typeof signInSchema>;
 
-export default function App() {
+export default function SIgnInScreen() {
   const [email, setEmail] = useState(''); 
   const [password, setPassword] = useState('');
 
@@ -62,7 +63,8 @@ export default function App() {
         onPress={handleSubmit(onSignin)}
       />
 
-      <StatusBar style="auto" />
+      <Link style={styles.link} href={'/sign-up'}>Don't have an account? Sign up</Link>
+
     </KeyboardAvoidingView>
   );
 }
@@ -82,5 +84,8 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: '600'
   },
-  
+  link: {
+    color: '#4353fd',
+    fontWeight: '600'
+  }
 });
