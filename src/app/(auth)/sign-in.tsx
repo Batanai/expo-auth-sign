@@ -6,7 +6,8 @@ import { useState } from 'react';
 import {useForm, Controller} from 'react-hook-form';
 import {z} from 'zod';
 import {zodResolver} from '@hookform/resolvers/zod';
-import { Link } from 'expo-router';
+import { Link, router } from 'expo-router';
+import { useAuth } from '../providers/AuthProvider';
 
 const signInSchema = z.object({
   email: z.string({message: "Email is required"}).email("Invalid email"),
@@ -18,14 +19,16 @@ type SignInFields = z.infer<typeof signInSchema>;
 export default function SIgnInScreen() {
   const [email, setEmail] = useState(''); 
   const [password, setPassword] = useState('');
+  const {signIn} = useAuth();
 
   const {control, handleSubmit, formState:{errors}} = useForm<SignInFields>({
     resolver: zodResolver(signInSchema)
   });
   
   console.log(errors)
-    const onSignin = (data: SignInFields) => {
-      console.log('Sign In: ', data.email, data.password);
+  const onSignin = (data: SignInFields) => {
+    console.log('Sign In: ', data.email, data.password);
+    signIn();
   }
 
   return (
